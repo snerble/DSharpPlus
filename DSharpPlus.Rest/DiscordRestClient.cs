@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
 using DSharpPlus.Exceptions;
@@ -45,7 +46,7 @@ namespace DSharpPlus
         internal Dictionary<ulong, DiscordGuild> _guilds = new();
         private Lazy<IReadOnlyDictionary<ulong, DiscordGuild>> _guilds_lazy;
 
-        public DiscordRestClient(DiscordConfiguration config) : base(config)
+        public DiscordRestClient(DiscordConfiguration config, HttpClient http = null) : base(config, http)
         {
             this._disposed = false;
         }

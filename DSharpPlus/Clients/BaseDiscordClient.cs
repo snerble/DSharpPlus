@@ -27,6 +27,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
@@ -89,7 +90,7 @@ namespace DSharpPlus
         /// Initializes this Discord API client.
         /// </summary>
         /// <param name="config">Configuration for this client.</param>
-        protected BaseDiscordClient(DiscordConfiguration config)
+        protected BaseDiscordClient(DiscordConfiguration config, HttpClient http = null)
         {
             this.Configuration = new DiscordConfiguration(config);
 
@@ -100,7 +101,7 @@ namespace DSharpPlus
             }
             this.Logger = this.Configuration.LoggerFactory.CreateLogger<BaseDiscordClient>();
 
-            this.ApiClient = new DiscordApiClient(this);
+            this.ApiClient = new DiscordApiClient(this, http);
             this.UserCache = new ConcurrentDictionary<ulong, DiscordUser>();
             this.InternalVoiceRegions = new ConcurrentDictionary<string, DiscordVoiceRegion>();
             this._voice_regions_lazy = new Lazy<IReadOnlyDictionary<string, DiscordVoiceRegion>>(() => new ReadOnlyDictionary<string, DiscordVoiceRegion>(this.InternalVoiceRegions));

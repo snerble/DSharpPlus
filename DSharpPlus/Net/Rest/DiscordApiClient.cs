@@ -28,6 +28,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.Entities;
@@ -52,9 +53,15 @@ namespace DSharpPlus.Net
             this._rest = new RestClient(client);
         }
 
-        internal DiscordApiClient(IWebProxy proxy, TimeSpan timeout, bool useRelativeRateLimit, ILogger logger) // This is for meta-clients, such as the webhook client
+        internal DiscordApiClient(BaseDiscordClient client, HttpClient http)
         {
-            this._rest = new RestClient(proxy, timeout, useRelativeRateLimit, logger);
+            this._discord = client;
+            this._rest = new RestClient(client, http);
+        }
+
+        internal DiscordApiClient(IWebProxy proxy, TimeSpan timeout, bool useRelativeRateLimit, ILogger logger, HttpClient http = null) // This is for meta-clients, such as the webhook client
+        {
+            this._rest = new RestClient(proxy, timeout, useRelativeRateLimit, logger, http);
         }
 
         private static string BuildQueryString(IDictionary<string, string> values, bool post = false)

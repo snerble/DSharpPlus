@@ -67,26 +67,39 @@ namespace DSharpPlus.Net
             this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", Utilities.GetFormattedToken(client));
         }
 
-        internal RestClient(IWebProxy proxy, TimeSpan timeout, bool useRelativeRatelimit,
-            ILogger logger) // This is for meta-clients, such as the webhook client
+        internal RestClient(BaseDiscordClient client, HttpClient http)
+            : this(client.Configuration.Proxy, client.Configuration.HttpTimeout, client.Configuration.UseRelativeRatelimit, client.Logger, http)
+        {
+            this.Discord = client;
+            this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", Utilities.GetFormattedToken(client));
+        }
+
+        internal RestClient(IWebProxy proxy, TimeSpan timeout, bool useRelativeRatelimit, ILogger logger, HttpClient http = null) // This is for meta-clients, such as the webhook client
         {
             this.Logger = logger;
 
             var httphandler = new HttpClientHandler
             {
+#if TARGET_BROWSER
                 UseCookies = false,
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
                 UseProxy = proxy != null,
                 Proxy = proxy
+#endif
             };
 
-            this.HttpClient = new HttpClient(httphandler)
+            this.HttpClient = http;
+            if (this.HttpClient == null)
             {
-                BaseAddress = new Uri(Utilities.GetApiBaseUri()),
-                Timeout = timeout
-            };
+                this.HttpClient = new HttpClient(httphandler);
 
-            this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", Utilities.GetUserAgent());
+                // Set optionals
+                this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", Utilities.GetUserAgent());
+            }
+
+            // Set defaults
+            this.HttpClient.BaseAddress = new Uri(Utilities.GetApiBaseUri());
+            this.HttpClient.Timeout = timeout;
 
             this.RoutesToHashes = new ConcurrentDictionary<string, string>();
             this.HashesToBuckets = new ConcurrentDictionary<string, RateLimitBucket>();
