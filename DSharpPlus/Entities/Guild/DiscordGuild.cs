@@ -490,7 +490,7 @@ namespace DSharpPlus.Entities
         /// </summary>
         [JsonIgnore]
         // Group the channels by category or parent id
-        public IEnumerable<DiscordChannel> OrderedChannels => _channels.Values.GroupBy(channel => channel.IsCategory ? channel.Id : channel.ParentId)
+        public IEnumerable<DiscordChannel> OrderedChannels => this._channels.Values.GroupBy(channel => channel.IsCategory ? channel.Id : channel.ParentId)
         // Order the channel by the category's position
             .OrderBy(channels => channels.FirstOrDefault(channel => channel.IsCategory)?.Position)
             // Select the category's channels
