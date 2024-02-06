@@ -10,6 +10,8 @@ using DSharpPlus.Entities;
 using DSharpPlus.Net;
 using Microsoft.Extensions.Logging;
 
+using System.Net.Http;
+
 namespace DSharpPlus;
 
 /// <summary>
@@ -66,7 +68,7 @@ public abstract class BaseDiscordClient : IDisposable
     /// Initializes this Discord API client.
     /// </summary>
     /// <param name="config">Configuration for this client.</param>
-    internal BaseDiscordClient(DiscordConfiguration config, RestClient? rest_client = null)
+    internal BaseDiscordClient(DiscordConfiguration config, RestClient? rest_client = null, HttpClient? http = null)
     {
         this.Configuration = new DiscordConfiguration(config);
 
@@ -77,7 +79,7 @@ public abstract class BaseDiscordClient : IDisposable
         }
         this.Logger = this.Configuration.LoggerFactory.CreateLogger<BaseDiscordClient>();
 
-        this.ApiClient = new DiscordApiClient(this, rest_client);
+        this.ApiClient = new DiscordApiClient(this, rest_client, http);
         this.UserCache = new ConcurrentDictionary<ulong, DiscordUser>();
         this.InternalVoiceRegions = new ConcurrentDictionary<string, DiscordVoiceRegion>();
         this._voice_regions_lazy = new Lazy<IReadOnlyDictionary<string, DiscordVoiceRegion>>(() => new ReadOnlyDictionary<string, DiscordVoiceRegion>(this.InternalVoiceRegions));

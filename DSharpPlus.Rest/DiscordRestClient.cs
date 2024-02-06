@@ -11,6 +11,8 @@ using DSharpPlus.Net.Models;
 
 namespace DSharpPlus;
 
+using System.Net.Http;
+
 public class DiscordRestClient : BaseDiscordClient
 {
     /// <summary>
@@ -22,7 +24,7 @@ public class DiscordRestClient : BaseDiscordClient
     internal Dictionary<ulong, DiscordGuild> _guilds = new();
     private Lazy<IReadOnlyDictionary<ulong, DiscordGuild>> _guilds_lazy;
 
-    public DiscordRestClient(DiscordConfiguration config) : base(config) => this._disposed = false;
+    public DiscordRestClient(DiscordConfiguration config, HttpClient http = null) : base(config, null, http) => this._disposed = false;
 
     /// <summary>
     /// Initializes cache

@@ -10,17 +10,15 @@ public class MessageDeleteEventArgs : DiscordEventArgs
     /// <summary>
     /// Gets the message that was deleted.
     /// </summary>
-    public DiscordMessage Message { get; internal set; }
+    public DiscordMessage Message { get; set; }
 
     /// <summary>
     /// Gets the channel this message belonged to.
     /// </summary>
-    public DiscordChannel Channel { get; internal set; }
+    public DiscordChannel Channel { get; set; }
 
     /// <summary>
     /// Gets the guild this message belonged to.
     /// </summary>
-    public DiscordGuild Guild { get; internal set; }
-
-    internal MessageDeleteEventArgs() : base() { }
+    public DiscordGuild Guild { get; set; }
 }

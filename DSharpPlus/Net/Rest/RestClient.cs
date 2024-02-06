@@ -1,11 +1,3 @@
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-
 using DSharpPlus.Exceptions;
 
 using Microsoft.Extensions.Logging;
@@ -13,6 +5,14 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 using Polly.Wrap;
+
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DSharpPlus.Net;
 
@@ -34,12 +34,13 @@ internal sealed partial class RestClient : IDisposable
 
     private volatile bool _disposed;
 
-    internal RestClient(DiscordConfiguration config, ILogger logger)
+    internal RestClient(DiscordConfiguration config, ILogger logger, HttpClient? http = null)
         : this
         (
             config.Proxy,
             config.HttpTimeout,
-            logger
+            logger,
+			http
         )
     {
         this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", Utilities.GetFormattedToken(config));
@@ -51,29 +52,35 @@ internal sealed partial class RestClient : IDisposable
     (
         IWebProxy proxy,
         TimeSpan timeout,
-        ILogger logger
+        ILogger logger,
+		HttpClient? http = null
     )
     {
         this.Logger = logger;
 
-        HttpClientHandler httphandler = new()
+        var httphandler = new HttpClientHandler
         {
-            UseCookies = false,
-            AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
-            UseProxy = proxy != null,
-            Proxy = proxy
+#if TARGET_BROWSER
+                UseCookies = false,
+                AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
+                UseProxy = proxy != null,
+                Proxy = proxy
+#endif
         };
 
-        this.HttpClient = new HttpClient(httphandler)
+        this.HttpClient = http;
+        if (this.HttpClient == null)
         {
-            BaseAddress = new Uri(Utilities.GetApiBaseUri()),
-            Timeout = timeout
-        };
+	        this.HttpClient = new HttpClient(httphandler);
 
-        this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", Utilities.GetUserAgent());
+			// Set optionals
+			this.HttpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", Utilities.GetUserAgent());
+        }
+
         this.HttpClient.BaseAddress = new(Endpoints.BASE_URI);
+        this.HttpClient.Timeout = timeout;
 
-        this.GlobalRateLimitEvent = new AsyncManualResetEvent(true);
+		this.GlobalRateLimitEvent = new AsyncManualResetEvent(true);
 
         // retrying forever is rather suboptimal, but it's the old behaviour. We should discuss whether
         // we want to break this.

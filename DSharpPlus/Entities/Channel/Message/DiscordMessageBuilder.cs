@@ -13,7 +13,6 @@ public sealed class DiscordMessageBuilder : BaseDiscordMessageBuilder<DiscordMes
     /// <summary>
     /// Gets or sets the embed for the builder. This will always set the builder to have one embed.
     /// </summary>
-    [Obsolete("Use the features for manipulating multiple embeds instead.", true, DiagnosticId = "DSP1001")]
     public DiscordEmbed? Embed
     {
         get => this._embeds.Count > 0 ? this._embeds[0] : null;
@@ -30,7 +29,6 @@ public sealed class DiscordMessageBuilder : BaseDiscordMessageBuilder<DiscordMes
     /// <summary>
     /// Gets or sets the sticker for the builder. This will always set the builder to have one sticker.
     /// </summary>
-    [Obsolete("Use the features for manipulating multiple stickers instead.", true, DiagnosticId = "DSP1002")]
     public DiscordMessageSticker? Sticker
     {
         get => this._stickers.Count > 0 ? this._stickers[0] : null;
@@ -127,7 +125,6 @@ public sealed class DiscordMessageBuilder : BaseDiscordMessageBuilder<DiscordMes
     /// </summary>
     /// <param name="sticker">The sticker to add.</param>
     /// <returns>The current builder to be chained.</returns>
-    [Obsolete("Use the features for manipulating multiple stickers instead.", true, DiagnosticId = "DSP1002")]
     public DiscordMessageBuilder WithSticker(DiscordMessageSticker sticker)
     {
         this.Sticker = sticker;
@@ -150,7 +147,6 @@ public sealed class DiscordMessageBuilder : BaseDiscordMessageBuilder<DiscordMes
     /// </summary>
     /// <param name="embed">The embed that should be set.</param>
     /// <returns>The current builder to be chained.</returns>
-    [Obsolete("Use the features for manipulating multiple embeds instead.", true, DiagnosticId = "DSP1001")]
     public DiscordMessageBuilder WithEmbed(DiscordEmbed embed)
     {
         if (embed == null)

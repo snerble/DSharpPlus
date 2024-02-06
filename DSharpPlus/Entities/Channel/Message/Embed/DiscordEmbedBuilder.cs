@@ -162,7 +162,7 @@ public sealed class DiscordEmbedBuilder
     /// </summary>
     /// <param name="title">Title to set.</param>
     /// <returns>This embed builder.</returns>
-    public DiscordEmbedBuilder WithTitle(string title)
+    public DiscordEmbedBuilder WithTitle(string? title)
     {
         this.Title = title;
         return this;
@@ -173,7 +173,7 @@ public sealed class DiscordEmbedBuilder
     /// </summary>
     /// <param name="description">Description to set.</param>
     /// <returns>This embed builder.</returns>
-    public DiscordEmbedBuilder WithDescription(string description)
+    public DiscordEmbedBuilder WithDescription(string? description)
     {
         this.Description = description;
         return this;
@@ -184,7 +184,7 @@ public sealed class DiscordEmbedBuilder
     /// </summary>
     /// <param name="url">Title url to set.</param>
     /// <returns>This embed builder.</returns>
-    public DiscordEmbedBuilder WithUrl(string url)
+    public DiscordEmbedBuilder WithUrl(string? url)
     {
         this.Url = url;
         return this;
