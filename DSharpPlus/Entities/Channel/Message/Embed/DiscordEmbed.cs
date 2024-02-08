@@ -91,6 +91,4 @@ public sealed class DiscordEmbed
     /// </summary>
     [JsonProperty("fields", NullValueHandling = NullValueHandling.Ignore)]
     public IReadOnlyList<DiscordEmbedField>? Fields { get; internal set; }
-
-    internal DiscordEmbed() {}
 }
