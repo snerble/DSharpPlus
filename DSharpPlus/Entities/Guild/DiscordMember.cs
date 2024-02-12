@@ -689,7 +689,7 @@ public class DiscordMember : DiscordUser, IEquatable<DiscordMember>
     /// <param name="e1">First member to compare.</param>
     /// <param name="e2">Second member to compare.</param>
     /// <returns>Whether the two members are equal.</returns>
-    public static bool operator ==(DiscordMember e1, DiscordMember e2)
+    public static bool operator ==(DiscordMember? e1, DiscordMember? e2)
     {
         object? o1 = e1 as object;
         object? o2 = e2 as object;
@@ -705,7 +705,7 @@ public class DiscordMember : DiscordUser, IEquatable<DiscordMember>
     /// <param name="e1">First member to compare.</param>
     /// <param name="e2">Second member to compare.</param>
     /// <returns>Whether the two members are not equal.</returns>
-    public static bool operator !=(DiscordMember e1, DiscordMember e2)
+    public static bool operator !=(DiscordMember? e1, DiscordMember? e2)
         => !(e1 == e2);
 
     /// <summary>
