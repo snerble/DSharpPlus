@@ -793,6 +793,6 @@ public class DiscordMessage : SnowflakeObject, IEquatable<DiscordMessage>
     /// <param name="e1">First message to compare.</param>
     /// <param name="e2">Second message to compare.</param>
     /// <returns>Whether the two messages are not equal.</returns>
-    public static bool operator !=(DiscordMessage e1, DiscordMessage e2)
+    public static bool operator !=(DiscordMessage? e1, DiscordMessage? e2)
         => !(e1 == e2);
 }
