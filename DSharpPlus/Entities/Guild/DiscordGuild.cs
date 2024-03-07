@@ -2155,12 +2155,12 @@ public class DiscordGuild : SnowflakeObject, IEquatable<DiscordGuild>
     /// <param name="e1">First member to compare.</param>
     /// <param name="e2">Second member to compare.</param>
     /// <returns>Whether the two members are equal.</returns>
-    public static bool operator ==(DiscordGuild e1, DiscordGuild e2)
+    public static bool operator ==(DiscordGuild? e1, DiscordGuild? e2)
     {
         object? o1 = e1;
         object? o2 = e2;
 
-        return (o1 == null && o2 != null) || (o1 != null && o2 == null) ? false : (o1 == null && o2 == null) || e1.Id == e2.Id;
+        return (o1 == null && o2 != null) || (o1 != null && o2 == null) ? false : (o1 == null && o2 == null) || e1!.Id == e2!.Id;
     }
 
     /// <summary>
@@ -2169,7 +2169,7 @@ public class DiscordGuild : SnowflakeObject, IEquatable<DiscordGuild>
     /// <param name="e1">First member to compare.</param>
     /// <param name="e2">Second member to compare.</param>
     /// <returns>Whether the two members are not equal.</returns>
-    public static bool operator !=(DiscordGuild e1, DiscordGuild e2)
+    public static bool operator !=(DiscordGuild? e1, DiscordGuild? e2)
         => !(e1 == e2);
 }
 
