@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace DSharpPlus.VoiceNext.Entities;
 
-internal sealed class VoiceDispatch
+public sealed class VoiceDispatch
 {
     [JsonProperty("op")]
     public int OpCode { get; set; }
